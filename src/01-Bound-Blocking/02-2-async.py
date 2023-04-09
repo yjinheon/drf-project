@@ -1,6 +1,7 @@
 import time
 import asyncio
 
+# 서브루틴 : 하나의 진입점과 하나의 종료점을 가지는 함수를 의미
 # 코루틴 : 다양한 진입점과 다양한 종료점을 가지는(루틴) 함수를 의미. 서브루틴의 일반화된 형태
 # python 에서 코루틴은 async def 로 정의되며, await 키워드를 사용하여 다른 코루틴으로 제어권을 넘길 수 있다.
 
@@ -30,7 +31,7 @@ async def main():
 
 
 async def main_sync():
-    await deliver("A", 5)  # 서브루틴 : 하나의 진입점과 하나의 종료점을 가지는 함수를 의미
+    await deliver("A", 5)
     await deliver("B", 3)
     await deliver("C", 4)
 
@@ -50,3 +51,4 @@ if __name__ == "__main__":
     start = time.time()
     asyncio.run(main())
     end = time.time()
+    print(f"Processing time of {main.__name__}: {(end-start):.2f}")
