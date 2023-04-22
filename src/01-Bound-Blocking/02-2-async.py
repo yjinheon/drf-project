@@ -29,7 +29,6 @@ async def main():
     )  #
     print(result)
 
-
 async def main_sync():
     await deliver("A", 5)
     await deliver("B", 3)
