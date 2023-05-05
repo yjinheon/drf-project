@@ -132,4 +132,12 @@ dmypy.json
 
 
 venv
->>>>>>> ad80dc1 (init)
+
+# .idea
+
+.idea
+
+# secretes
+
+secrets.json
+

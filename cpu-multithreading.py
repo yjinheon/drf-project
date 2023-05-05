@@ -1,16 +1,14 @@
 import time
 import os
 import threading
+from concurrent.futures import ThreadPoolExecutor
 
-nums = [50, 63, 32]
 
-import sys
+nums = [58, 62, 32]
 
-# int max str digits
-sys.set_int_max_str_digits(10000)
 
-def cpu_bound_func(num):
-    print(f"{os.getpid()} process | {threading.get_ident()} thread")
+def cpu_bound(num):
+    print(f"{os.getpid()} process | {threading.get_ident()} thread,{num}")
     numbers = range(1, num)
     total = 1
     for i in numbers:
@@ -21,7 +19,9 @@ def cpu_bound_func(num):
 
 
 def main():
-    results = [cpu_bound_func(num) for num in nums]
+    executor = ThreadPoolExecutor(max_workers=10)
+    # multi-threading
+    results = list(executor.map(cpu_bound, nums))
     print(results)
 
 

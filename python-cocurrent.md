@@ -15,6 +15,38 @@
 - ML
 - DL
 
+- [1. 파이썬 코루틴](#1-파이썬-코루틴)
+  - [바운드와 블로킹](#바운드와-블로킹)
+    - [CPU bound](#cpu-bound)
+    - [IO bound](#io-bound)
+    - [Blocking](#blocking)
+    - [Non-Blocking](#non-blocking)
+  - [동기와 비동기](#동기와-비동기)
+    - [동기](#동기)
+    - [비동기](#비동기)
+  - [컴퓨터 구조와 os 기본](#컴퓨터-구조와-os-기본)
+    - [메모리](#메모리)
+      - [주메모리](#주메모리)
+      - [보조메모리](#보조메모리)
+    - [CPU](#cpu)
+    - [입출력장치](#입출력장치)
+    - [시스템버스](#시스템버스)
+    - [OS](#os)
+    - [프로그램](#프로그램)
+    - [프로세스](#프로세스)
+    - [쓰레드](#쓰레드)
+      - [사용자 수준 스레드](#사용자-수준-스레드)
+      - [커널 수준 스레드](#커널-수준-스레드)
+  - [동시성 vs 병렬성](#동시성-vs-병렬성)
+    - [동시성(concurrency)](#동시성concurrency)
+    - [병렬성(Parallelism)](#병렬성parallelism)
+    - [동시성 병렬성 선택](#동시성-병렬성-선택)
+    - [멀티쓰레딩 문제](#멀티쓰레딩-문제)
+    - [GIL(Global Interpreter Lock)](#gilglobal-interpreter-lock)
+    - [Multithreading과 MultiProcessing 차이](#multithreading과-multiprocessing-차이)
+    - [멀티 프로세싱은 멀티 스레딩의 단점을 막아준다.](#멀티-프로세싱은-멀티-스레딩의-단점을-막아준다)
+
+
 # 1. 파이썬 코루틴
 
 ## 바운드와 블로킹
@@ -123,7 +155,20 @@ uname -a
 기본적으로 물리적 개념. 병렬성이 성립하려면 기본적으로 코어가 여러개 있거나 멀티쓰레딩이여야 한다.
 동시성과 공존할 수 있다. 이는 동시성이 논리적 개념이기 때문이다.
 
-3개의 코어로 병렬처리를 수행하면서 각각의 코어에서
+멀티스레딩에서 병렬성이 성립하려면 각각의 다른 코어에 각작의 다른 스레드가 실행되어야 한다.
+
+Multithreading is a form of concurrent programming that can enable parallelism, but it is not necessarily parallel programming on its own.
+
+In a multithreaded program, multiple threads are created within a process to execute different parts of the code concurrently. Each thread runs independently and shares the same memory space and resources of the process. This allows the program to execute multiple tasks concurrently, but it does not necessarily take advantage of multiple processors or cores, which is the hallmark of parallel programming.
+
+Parallel programming, on the other hand, involves dividing a program into smaller parts that can be executed in parallel on multiple processors or cores. This can be done using techniques such as message passing, shared-memory, or distributed computing. By executing different parts of the program in parallel, it can significantly improve the performance of the program.
+
+While multithreading can enable parallelism by allowing different threads to execute on different cores, it is not guaranteed to do so. The operating system scheduler may decide to run all the threads on a single core if there is not enough work to distribute across multiple cores or if there are other system constraints in place.
+
+In summary, multithreading is a form of concurrent programming that can enable parallelism, but it is not synonymous with parallel programming. Parallel programming involves explicitly designing a program to take advantage of multiple processors or cores, while multithreading involves managing multiple threads within a single process.
+
+3개의 코어로 병렬처리를 수행하면서 각각의 코어에서 동시성 처리가 가능하다.
+
 
 
 ### 동시성 병렬성 선택
@@ -146,16 +191,51 @@ Therefore, when choosing between concurrent programming and parallel programming
 
 ### 멀티쓰레딩 문제
 
-스레드 끼리 자원을 공유함
+멀티쓰레딩은 기본적으로는 동시성 프로그래밍이며 하나의 프로세서에 여러 스레드를 할당하는 것이다.
+메모리를 공유한다.
+
+
+스레드 끼리 자원을 공유함 -> 메모리를 공유함
 하나의 자원을 동시에 여러 스레드가 사용할 수 있음-> 이 경우 충돌 발생
 이때 하나의 스레드가 다른 스레드에 의해 차단됨
 
-### GIL(Global interpreter lock)
+### GIL(Global Interpreter Lock)
+
 
 > 한번에 한 쓰레드만 유지하는 락
 
-한 스레드가 다른 스레드를 차단해서 제어를 얻는 것을 막아줌 -> 멀티스레딩의 잠재적인 위험으로 부터 보호
+한 스레드가 다른 스레드를 차단해서 제어를 얻는 것을 막아줌 -> 멀티스레딩의 잠재적인 위험(메모리 공유)으로 부터 보호
 
 따라서 파이썬은 기본적으로 병렬성 연산을 수행하지 못한다.
 
 파이썬 멀티스레딩은 동시성을 사용해 io bound 에서 유용하게 사용할 수 있지만 cpu bound에서는 gil에 의해 원하는 결과를 얻을 수 없음
+
+동시성은 cpu bound(복잡한 계산)에서는 유용하지 않음
+
+io-bound 컨텍스트에서는 멀티스레딩의 성능이 더 잘 나온다.
+
+
+### Multithreading과 MultiProcessing 차이
+
+Multithreading is a technique where a single process is divided into multiple threads, each of which can execute independently and concurrently within the same process. This means that multiple parts of the same program can be executed simultaneously, resulting in faster execution times. However, since all the threads share the same memory space, there can be issues with data synchronization and race conditions, which can lead to bugs and unexpected behavior.
+
+On the other hand, multiprocessing is a technique where multiple processes are created, each of which has its own memory space and can execute independently of each other. This means that multiple programs can be executed simultaneously, allowing for true parallelism. Since each process has its own memory space, there are no issues with data synchronization or race conditions between processes. However, communication and data sharing between processes can be more complex and less efficient than in multithreading.
+
+In summary, multithreading is a technique to achieve parallelism within a single process, while multiprocessing is a technique to achieve true parallelism by running multiple processes simultaneously. Both have their own advantages and disadvantages and are used depending on the specific needs of the program.
+
+
+
+### 멀티 프로세싱은 멀티 스레딩의 단점을 막아준다.
+
+## 서버 , 클라이언트, HTTP, API 이해
+
+- 모두의 API
+
+### TCP/IP
+
+### API
+
+> API의 핵심은 구현 방식을 알지 못하는 제품 또는 서비스와 통신하는 것
+
+## 웸 스크래핑
+
