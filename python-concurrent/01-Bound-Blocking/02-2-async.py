@@ -48,6 +48,6 @@ async def main_task():
 
 if __name__ == "__main__":
     start = time.time()
-    asyncio.run(main())
+    asyncio.run(main_sync())
     end = time.time()
     print(f"Processing time of {main.__name__}: {(end-start):.2f}")

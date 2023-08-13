@@ -150,7 +150,7 @@ uname -a
 
 ### 병렬성(Parallelism)
 
-> 한번에 여러 작업을 병렬적으로 처리하는 것을 의미. 기본적으로 동시에 처리
+> 한번에 여러 작업을 병렬적으로 처리하는 것을 의미. 동시에 처리
 
 기본적으로 물리적 개념. 병렬성이 성립하려면 기본적으로 코어가 여러개 있거나 멀티쓰레딩이여야 한다.
 동시성과 공존할 수 있다. 이는 동시성이 논리적 개념이기 때문이다.
@@ -176,6 +176,8 @@ In summary, multithreading is a form of concurrent programming that can enable p
 The choice between concurrent programming and parallel programming depends on the specific problem that you are trying to solve and the resources available to you.
 
 Concurrency programming is most appropriate when the problem involves **I/O-bound tasks, such as reading and writing to files or network sockets, where the tasks spend most of their time waiting for I/O operations to complete**. In this case, concurrency programming can help improve the responsiveness of the program by allowing the tasks to execute concurrently and reduce the waiting time for I/O operations.
+
+*cpu-bound task에서 주로 병렬성 프로그래밍을 고려한다*
 
 Parallel programming, on the other hand, is most appropriate when the problem involves **CPU-bound tasks, such as mathematical computations or data processing, where the tasks require significant processing power and can be executed simultaneously on different CPU cores or processors**. In this case, parallel programming can help improve the performance and throughput of the program by exploiting the parallelism and utilizing all available computing resources.
 
@@ -208,7 +210,7 @@ Therefore, when choosing between concurrent programming and parallel programming
 
 따라서 파이썬은 기본적으로 병렬성 연산을 수행하지 못한다.
 
-파이썬 멀티스레딩은 동시성을 사용해 io bound 에서 유용하게 사용할 수 있지만 cpu bound에서는 gil에 의해 원하는 결과를 얻을 수 없음
+**파이썬 멀티스레딩은 동시성을 사용해 io bound 에서 유용하게 사용할 수 있지만 cpu bound에서는 gil에 의해 원하는 결과를 얻을 수 없음**
 
 동시성은 cpu bound(복잡한 계산)에서는 유용하지 않음
 
@@ -223,8 +225,6 @@ On the other hand, multiprocessing is a technique where multiple processes are c
 
 In summary, multithreading is a technique to achieve parallelism within a single process, while multiprocessing is a technique to achieve true parallelism by running multiple processes simultaneously. Both have their own advantages and disadvantages and are used depending on the specific needs of the program.
 
-
-
 ### 멀티 프로세싱은 멀티 스레딩의 단점을 막아준다.
 
 ## 서버 , 클라이언트, HTTP, API 이해
@@ -238,4 +238,29 @@ In summary, multithreading is a technique to achieve parallelism within a single
 > API의 핵심은 구현 방식을 알지 못하는 제품 또는 서비스와 통신하는 것
 
 ## 웸 스크래핑
+
+## FastAPI Project
+
+### ORM(Object Relational Mapper)
+
+### ODM(Object Document Mapper)
+
+ORM의 NoSQL 버전
+
+ODM이란 NoSQL 데이터베이스를 사용할 때 사용하는 기술로, 객체와 문서를 매핑하는 기술이다. ORM과 유사하지만, NoSQL의 특징을 반영하여 구현되었다.
+
+### Template Response
+
+
+### fastapi DB 연결
+
+1. 시크릿 변수 설정
+
+2. odmantic을 사용하여 fastapi와 연결
+
+3. models 디렉토리를 사용하여 추상화
+
+4. book 모델 개발
+
+5. db에 insert
 

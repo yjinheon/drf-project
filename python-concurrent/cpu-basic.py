@@ -7,7 +7,7 @@ nums = [50, 63, 32]
 import sys
 
 # int max str digits
-sys.set_int_max_str_digits(10000)
+#sys.set_int_max_str_digits(10000)
 
 def cpu_bound_func(num):
     print(f"{os.getpid()} process | {threading.get_ident()} thread")
@@ -17,6 +17,7 @@ def cpu_bound_func(num):
         for j in numbers:
             for k in numbers:
                 total *= i * j * k
+
     return total
 
 
@@ -26,6 +27,7 @@ def main():
 
 
 if __name__ == "__main__":
+    sys.set_int_max_str_digits(10000)
     start = time.time()
     main()
     end = time.time()
